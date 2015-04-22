@@ -10,8 +10,9 @@ import org.apache.shiro.config.Ini.Section;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.my.shiro.dao.ResourceDao;
+import com.myself.community.dao.ResourceDao;
 import com.myself.community.entity.Resource;
+
 
 public class ChainDefinitionSectionMetaSource implements
 		FactoryBean<Ini.Section> {

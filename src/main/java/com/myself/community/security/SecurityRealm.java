@@ -20,10 +20,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.my.shiro.bo.UserService;
-import com.my.shiro.entity.Permission;
-import com.my.shiro.entity.Role;
-import com.my.shiro.entity.User;
+import com.myself.community.entity.Permission;
+import com.myself.community.entity.Role;
+import com.myself.community.entity.User;
+import com.myself.community.service.UserService;
 
 public class SecurityRealm extends AuthorizingRealm {
 
