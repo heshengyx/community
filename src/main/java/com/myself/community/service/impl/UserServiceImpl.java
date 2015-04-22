@@ -3,8 +3,10 @@ package com.myself.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.myself.community.dao.UserDao;
 import com.myself.community.entity.Permission;
 import com.myself.community.entity.Role;
 import com.myself.community.entity.User;
@@ -13,6 +15,9 @@ import com.myself.community.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private UserDao userDao;
+	
 	public User getByUserName(String userName) {
 		User user = new User();
 		user.setUserName(userName);
@@ -31,6 +36,10 @@ public class UserServiceImpl implements UserService {
 		roles.add(role);
 		user.setRoles(roles);
 		return user;
+	}
+
+	public int save(User user) {
+		return userDao.save(user);
 	}
 
 }

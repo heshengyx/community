@@ -16,6 +16,11 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>com.myself.source</groupId>
+  			<artifactId>source</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.8.5</version>
