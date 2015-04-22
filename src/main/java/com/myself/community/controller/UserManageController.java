@@ -23,6 +23,11 @@ public class UserManageController extends BaseController {
 		return "user/list";
 	}
 	
+	@RequestMapping(value="/edit", method=RequestMethod.GET)
+	public String edit() {
+		return "manage/user/user-edit";
+	}
+	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
 	public Object save(User user) {
