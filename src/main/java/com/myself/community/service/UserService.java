@@ -5,5 +5,5 @@ import com.myself.community.entity.User;
 public interface UserService {
 
 	int save(User user);
-	User getByUserName(String userName);
+	User getUserByAccount(String account);
 }

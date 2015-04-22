@@ -4,7 +4,8 @@ import java.util.List;
 
 public class User {
 
-	private String userName;
+	private String name;
+	private String account;
 	private String password;
 	private String nickName;
 	private List<Role> roles;
@@ -16,13 +17,21 @@ public class User {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-
-	public String getUserName() {
-		return userName;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	public String getPassword() {

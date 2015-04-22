@@ -17,12 +17,6 @@ public class UserManageController extends BaseController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String list(User user) {
-		System.out.println("==============list=" + user.getUserName() + "," + user.getPassword());
-		return "user/list";
-	}
-	
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
 	public String edit() {
 		return "manage/user/user-edit";
