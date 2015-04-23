@@ -1,7 +1,6 @@
 package com.myself.community.security;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -9,16 +8,17 @@ import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
-import com.myself.community.dao.ResourceDao;
-import com.myself.community.entity.Resource;
+import com.myself.community.dao.PermissionDao;
+import com.myself.community.entity.Permission;
 
 
 public class ChainDefinitionSectionMetaSource implements
 		FactoryBean<Ini.Section> {
 
 	@Autowired  
-    private ResourceDao resourceDao;
+    private PermissionDao permissionDao;
 	
 	private String filterChainDefinitions;
 
@@ -39,7 +39,7 @@ public class ChainDefinitionSectionMetaSource implements
 
 	public Section getObject() throws Exception {
 		//获取所有Resource  
-        List<Resource> list = resourceDao.getResources();  
+		List<Permission> permissions = permissionDao.queryPermissions();
   
         Ini ini = new Ini();  
         //加载默认的url  
@@ -47,14 +47,13 @@ public class ChainDefinitionSectionMetaSource implements
         Ini.Section section = ini.getSection(Ini.DEFAULT_SECTION_NAME);  
         //循环Resource的url,逐个添加到section中。section就是filterChainDefinitionMap,  
         //里面的键就是链接URL,值就是存在什么条件才能访问该链接  
-        for (Iterator<Resource> it = list.iterator(); it.hasNext();) {  
-  
-            Resource resource = it.next();  
-            //如果不为空值添加到section中  
-            if(StringUtils.isNotEmpty(resource.getValue()) && StringUtils.isNotEmpty(resource.getPermission())) {  
-                section.put(resource.getValue(),  MessageFormat.format(PREMISSION_STRING,resource.getPermission()));  
-            }
-        }
+        if (!CollectionUtils.isEmpty(permissions)) {
+			for (Permission permission : permissions) {
+				if(StringUtils.isNotEmpty(permission.getUrl()) && StringUtils.isNotEmpty(permission.getName())) {
+					section.put(permission.getUrl(),  MessageFormat.format(PREMISSION_STRING, permission.getName()));
+				}
+			}
+		}
 		return section;
 	}
 

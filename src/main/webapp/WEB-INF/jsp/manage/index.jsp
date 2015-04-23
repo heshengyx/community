@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h2>Hello World! User:<shiro:principal property="userName" /></h2>
-<shiro:hasPermission name="admin:user">
+<h2>Hello World! User:<shiro:principal property="name" /></h2>
+<shiro:hasPermission name="admin:list">
 <a href="/user/list">User List</a><br>
 </shiro:hasPermission>
 <shiro:hasPermission name="admin:book">

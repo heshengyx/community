@@ -13,16 +13,20 @@ import com.myself.community.mapper.UserMapper;
 public class UserDaoImpl extends BaseDao<UserMapper> implements UserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
-	private UserMapper mapper;
 	
 	public int save(User user) {
-		mapper = getMapper(UserMapper.class);
+		UserMapper mapper = getMapper(UserMapper.class);
 		int count = 0;
 		try {
 			count = mapper.save(user);
 		} catch (Exception e) {
 		}
 		return count;
+	}
+
+	public User getUserByAccount(String account) {
+		UserMapper mapper = getMapper(UserMapper.class);
+		return mapper.getUserByAccount(account);
 	}
 
 }

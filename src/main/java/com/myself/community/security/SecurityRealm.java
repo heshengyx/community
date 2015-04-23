@@ -19,16 +19,25 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
+import com.myself.community.dao.PermissionDao;
+import com.myself.community.dao.RoleDao;
+import com.myself.community.dao.UserDao;
 import com.myself.community.entity.Permission;
 import com.myself.community.entity.Role;
 import com.myself.community.entity.User;
-import com.myself.community.service.UserService;
 
 public class SecurityRealm extends AuthorizingRealm {
 
 	@Autowired
-	private UserService userService;
+	private UserDao userDao;
+	
+	@Autowired
+	private RoleDao roleDao;
+	
+	@Autowired
+	private PermissionDao permissionDao;
 
 	/**
 	 * 为当前登录的Subject授予角色和权限
@@ -54,16 +63,16 @@ public class SecurityRealm extends AuthorizingRealm {
 
 		//User user = userService.getByUserName(currentUsername);
 		if (null != user) {
+			List<Role> roles = roleDao.queryRolesByUserId(user.getId());
 			// 实体类User中包含有用户角色的实体类信息
-			if (null != user.getRoles() && user.getRoles().size() > 0) {
-				for (Role role : user.getRoles()) {
+			if (!CollectionUtils.isEmpty(roles)) {
+				for (Role role : roles) {
 					roleList.add(role.getName());
-					// 实体类Role中包含有角色权限的实体类信息
-					if (null != role.getPermissions()
-							&& role.getPermissions().size() > 0) {
-						for (Permission permission : role.getPermissions()) {
-							if (!StringUtils.isEmpty(permission.getUrl())) {
-								permissionList.add(permission.getUrl());
+					List<Permission> permissions = permissionDao.queryPermissionsByRoleId(role.getId());
+					if (!CollectionUtils.isEmpty(permissions)) {
+						for (Permission permission : permissions) {
+							if (!StringUtils.isEmpty(permission.getName())) {
+								permissionList.add(permission.getName());
 							}
 						}
 					}
@@ -89,10 +98,10 @@ public class SecurityRealm extends AuthorizingRealm {
 		System.out.println("验证当前Subject时获取到token为"
 				+ ReflectionToStringBuilder.toString(token,
 						ToStringStyle.MULTI_LINE_STYLE));
-		User user = userService.getUserByAccount(token.getUsername());
+		User user = userDao.getUserByAccount(token.getUsername());
 		if (null != user) {
 			authcInfo = new SimpleAuthenticationInfo(user,
-					user.getPassword(), user.getNickName());
+					user.getPassword(), user.getName());
 			this.setSession("currentUser", user);
 		}
 		return authcInfo;

@@ -5,4 +5,5 @@ import com.myself.community.entity.User;
 public interface UserDao {
 
 	int save(User user);
+	User getUserByAccount(String account);
 }

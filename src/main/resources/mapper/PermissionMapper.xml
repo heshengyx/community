@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.myself.community.mapper.UserMapper">
-	<resultMap type="user" id="userResult">
+<mapper namespace="com.myself.community.mapper.PermissionMapper">
+	<resultMap type="permission" id="permissionResult">
 		<id column="ID" property="id" jdbcType="NUMERIC" />
 <result column="NAME" property="name" jdbcType="VARCHAR" />
-<result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
-<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+<result column="URL" property="url" jdbcType="VARCHAR" />
 <result column="STATUS" property="status" jdbcType="VARCHAR" />
 <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
 <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<select id="getUserByAccount" parameterType="String" resultMap="userResult">
-		SELECT * FROM USER WHERE ACCOUNT=#{account}
+	<select id="queryPermissionsByRoleId" parameterType="String" resultMap="permissionResult">
+		SELECT a.* FROM PERMISSION a, ROLE_PERMISSION b WHERE a.ID = b.PERMISSION_ID AND b.ROLE_ID = #{roleId}
+	</select>
+	<select id="queryPermissions" resultMap="permissionResult">
+		SELECT a.* FROM PERMISSION a
 	</select>
 	
-	<select id="getUser" parameterType="int" resultMap="userResult">
+	<select id="getRole" parameterType="int" resultMap="permissionResult">
 		SELECT * FROM CLAZZ WHERE ID=#{id, jdbcType=NUMERIC}
 	</select>
-	<select id="list" parameterType="pageResult" resultMap="userResult">
+	<select id="list" parameterType="pageResult" resultMap="permissionResult">
 		SELECT * FROM CLAZZ 
 		<where>
 <if test="entity.className != null and entity.className != ''">
@@ -38,7 +40,7 @@
 		order by CREATE_TIME desc
 	</select>
 	
-	<insert id="save" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="role" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO CLAZZ (NAME, TSTATUS, CREATE_TIME, UPDATE_TIME, REMARKS)
 		VALUES (
 #{name, jdbcType=VARCHAR},
@@ -48,7 +50,7 @@
 #{remarks, jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="update" parameterType="user">
+	<update id="update" parameterType="role">
 		update CLAZZ
 		<set>
 <if test="className != null">
