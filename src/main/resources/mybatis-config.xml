@@ -6,12 +6,12 @@
 	</properties>
 	
 	<typeAliases>
-		<typeAlias type="com.myself.source.page.Page" alias="pageResult" />
+		<typeAlias type="com.myself.common.page.Page" alias="pageResult" />
 		<typeAlias type="com.myself.community.entity.User" alias="user" />
 		<!-- [typeAlias] -->
 	</typeAliases>
 	
 	<plugins>  
-    	<plugin interceptor="com.apache.velocity.page.PageInterceptor" />   
+    	<plugin interceptor="com.myself.community.interceptor.PageInterceptor" />   
 	</plugins>
 </configuration>

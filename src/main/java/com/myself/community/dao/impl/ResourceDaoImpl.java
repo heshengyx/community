@@ -18,10 +18,6 @@ public class ResourceDaoImpl extends BaseDao<ResourceMapper> implements Resource
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDaoImpl.class);
 	private ResourceMapper mapper;
 	
-	public ResourceDaoImpl() {
-		mapper = getMapper(ResourceMapper.class);
-	}
-	
 	public List<Resource> getResources() {
 		List<Resource> resources = new ArrayList<Resource>();
 		Resource resource = new Resource();
@@ -36,6 +32,7 @@ public class ResourceDaoImpl extends BaseDao<ResourceMapper> implements Resource
 	}
 
 	public int save(Resource resource) {
+		mapper = getMapper(ResourceMapper.class);
 		int count = 0;
 		try {
 			count = mapper.save(resource);

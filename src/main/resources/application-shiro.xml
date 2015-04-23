@@ -9,7 +9,7 @@
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->  
-	<bean id="securityRealm" class="com.myself.community.realm.SecurityRealm"/>  
+	<bean id="securityRealm" class="com.myself.community.security.SecurityRealm"/>  
    
 	<!-- Shiro默认会使用Servlet容器的Session,可通过sessionMode属性来指定使用Shiro原生Session -->  
 	<!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->  
@@ -46,7 +46,7 @@
 		<property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />
 	</bean>  
    
-   	<bean id="chainDefinitionSectionMetaSource" class="com.my.shiro.realm.ChainDefinitionSectionMetaSource">  
+   	<bean id="chainDefinitionSectionMetaSource" class="com.myself.community.security.ChainDefinitionSectionMetaSource">  
 	   	<property name="filterChainDefinitions">  
 	        <value>  
 	            /security/login = anon
