@@ -16,8 +16,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.myself.source</groupId>
-  			<artifactId>source</artifactId>
+			<groupId>com.myself.common</groupId>
+  			<artifactId>common</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

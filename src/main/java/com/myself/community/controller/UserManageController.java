@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.myself.community.entity.User;
 import com.myself.community.service.UserService;
-import com.myself.source.message.JsonMessage;
+import com.myself.common.message.JsonMessage;
 
 @Controller
 @RequestMapping("/manage/user")
