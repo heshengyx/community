@@ -50,8 +50,10 @@
 	   	<property name="filterChainDefinitions">  
 	        <value>  
 	            /security/login = anon
+	            /css/** = anon
+	            /js/** = anon
+	            /img/** = anon
 	            /logout = logout  
-	            /resource/** = anon  
 	        </value>  
 	    </property>  
 	</bean>
