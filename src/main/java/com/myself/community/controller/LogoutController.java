@@ -11,7 +11,7 @@ import com.myself.community.entity.User;
 @Controller
 @RequestMapping("/security")
 public class LogoutController {
-
+	
 	@RequestMapping("/logout")
 	public String logout(User user) {
 		Subject subject = SecurityUtils.getSubject();
