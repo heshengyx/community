@@ -53,7 +53,7 @@
 	            /css/** = anon
 	            /js/** = anon
 	            /img/** = anon
-	            /logout = logout  
+	            <!--/security/logout = logout   --> 
 	        </value>  
 	    </property>  
 	</bean>

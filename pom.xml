@@ -200,6 +200,12 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>1.2.3</version>
 		</dependency>
+		<!-- sitemesh -->
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 		<!-- junit测试包 -->
 		<dependency>
 			<groupId>junit</groupId>

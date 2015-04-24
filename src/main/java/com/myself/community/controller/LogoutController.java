@@ -13,9 +13,9 @@ import com.myself.community.entity.User;
 public class LogoutController {
 
 	@RequestMapping("/logout")
-	public String login(User user) {
+	public String logout(User user) {
 		Subject subject = SecurityUtils.getSubject();
 		subject.logout();
-		return "redirect:/login.jsp";
+		return "redirect:/manage/login.jsp";
 	}
 }

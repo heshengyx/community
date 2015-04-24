@@ -20,11 +20,6 @@ public class LoginController {
 				user.getAccount(), user.getPassword());
 		//token.setRememberMe(true);
 		subject.login(token);
-		return "redirect:/security/success";
-	}
-
-	@RequestMapping("/success")
-	public String success() {
-		return "manage/index";
+		return "redirect:/manage/index";
 	}
 }
