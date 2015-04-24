@@ -6,10 +6,12 @@
 	</properties>
 	
 	<typeAliases>
-		<typeAlias type="com.myself.common.page.Page" alias="pageResult" />
+		<typeAlias type="com.myself.community.page.Page" alias="pageResult" />
 		<typeAlias type="com.myself.community.entity.User" alias="user" />
 		<typeAlias type="com.myself.community.entity.Role" alias="role" />
 		<typeAlias type="com.myself.community.entity.Permission" alias="permission" />
+		
+		<typeAlias type="com.myself.community.entity.Building" alias="building" />
 		<!-- [typeAlias] -->
 	</typeAliases>
 	

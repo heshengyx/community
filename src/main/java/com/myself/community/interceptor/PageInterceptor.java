@@ -24,10 +24,10 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.myself.common.page.Dialect;
-import com.myself.common.page.MySqlDialect;
-import com.myself.common.page.OracleDialect;
-import com.myself.common.page.Page;
+import com.myself.community.page.Dialect;
+import com.myself.community.page.MySqlDialect;
+import com.myself.community.page.OracleDialect;
+import com.myself.community.page.Page;
 
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 public class PageInterceptor implements Interceptor {
