@@ -37,6 +37,62 @@
 	<!-- start: Favicon -->
 	<link rel="shortcut icon" href="${ctx}/img/favicon.ico">
 	<!-- end: Favicon -->
+	<!-- start: JavaScript-->
+		<script src="${ctx}/js/jquery-1.9.1.min.js"></script>
+	<script src="${ctx}/js/jquery-migrate-1.0.0.min.js"></script>
+	
+		<script src="${ctx}/js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.ui.touch-punch.js"></script>
+	
+		<script src="${ctx}/js/modernizr.js"></script>
+	
+		<script src="${ctx}/js/bootstrap.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.cookie.js"></script>
+	
+		<script src='${ctx}/js/fullcalendar.min.js'></script>
+	
+		<script src='${ctx}/js/jquery.dataTables.min.js'></script>
+
+		<script src="${ctx}/js/excanvas.js"></script>
+	<script src="${ctx}/js/jquery.flot.js"></script>
+	<script src="${ctx}/js/jquery.flot.pie.js"></script>
+	<script src="${ctx}/js/jquery.flot.stack.js"></script>
+	<script src="${ctx}/js/jquery.flot.resize.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.chosen.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.uniform.min.js"></script>
+		
+		<script src="${ctx}/js/jquery.cleditor.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.noty.js"></script>
+	
+		<script src="${ctx}/js/jquery.elfinder.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.raty.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.iphone.toggle.js"></script>
+	
+		<script src="${ctx}/js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.gritter.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.imagesloaded.js"></script>
+	
+		<script src="${ctx}/js/jquery.masonry.min.js"></script>
+	
+		<script src="${ctx}/js/jquery.knob.modified.js"></script>
+	
+		<script src="${ctx}/js/jquery.sparkline.min.js"></script>
+	
+		<script src="${ctx}/js/counter.js"></script>
+	
+		<script src="${ctx}/js/retina.js"></script>
+
+		<script src="${ctx}/js/custom.js"></script>
+	<!-- end: JavaScript-->
 	<decorator:head/>
 </head>
 
@@ -332,7 +388,7 @@
 			<div id="sidebar-left" class="span2">
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li><a href="${ctx}/manage/building/list"><i class="icon-bar-chart"></i><span class="hidden-tablet"> 楼盘管理</span></a></li>
+						<li><a href="${ctx}/manage/building"><i class="icon-bar-chart"></i><span class="hidden-tablet"> 楼盘管理</span></a></li>
 						<li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a></li>	
 						<li><a href="${ctx}/messages.html"><i class="icon-envelope"></i><span class="hidden-tablet"> Messages</span></a></li>
 						<li><a href="${ctx}/tasks.html"><i class="icon-tasks"></i><span class="hidden-tablet"> Tasks</span></a></li>
@@ -397,64 +453,5 @@
 		</p>
 
 	</footer>
-	
-	<!-- start: JavaScript-->
-
-		<script src="${ctx}/js/jquery-1.9.1.min.js"></script>
-	<script src="${ctx}/js/jquery-migrate-1.0.0.min.js"></script>
-	
-		<script src="${ctx}/js/jquery-ui-1.10.0.custom.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.ui.touch-punch.js"></script>
-	
-		<script src="${ctx}/js/modernizr.js"></script>
-	
-		<script src="${ctx}/js/bootstrap.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.cookie.js"></script>
-	
-		<script src='${ctx}/js/fullcalendar.min.js'></script>
-	
-		<script src='${ctx}/js/jquery.dataTables.min.js'></script>
-
-		<script src="${ctx}/js/excanvas.js"></script>
-	<script src="${ctx}/js/jquery.flot.js"></script>
-	<script src="${ctx}/js/jquery.flot.pie.js"></script>
-	<script src="${ctx}/js/jquery.flot.stack.js"></script>
-	<script src="${ctx}/js/jquery.flot.resize.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.chosen.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.uniform.min.js"></script>
-		
-		<script src="${ctx}/js/jquery.cleditor.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.noty.js"></script>
-	
-		<script src="${ctx}/js/jquery.elfinder.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.raty.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.iphone.toggle.js"></script>
-	
-		<script src="${ctx}/js/jquery.uploadify-3.1.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.gritter.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.imagesloaded.js"></script>
-	
-		<script src="${ctx}/js/jquery.masonry.min.js"></script>
-	
-		<script src="${ctx}/js/jquery.knob.modified.js"></script>
-	
-		<script src="${ctx}/js/jquery.sparkline.min.js"></script>
-	
-		<script src="${ctx}/js/counter.js"></script>
-	
-		<script src="${ctx}/js/retina.js"></script>
-
-		<script src="${ctx}/js/custom.js"></script>
-	<!-- end: JavaScript-->
-	
 </body>
 </html>

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.myself.common.message.JsonResult;
 import com.myself.community.entity.Building;
 import com.myself.community.page.Page;
 import com.myself.community.param.BuildingQueryParam;
@@ -25,7 +27,8 @@ public class BuildingManagerController {
 	}
 	
 	@RequestMapping("/list")
-	public String list(BuildingQueryParam param) {
+	@ResponseBody
+	public Object list(BuildingQueryParam param) {
 		Page<BuildingQueryParam> pageResult = new Page<BuildingQueryParam>();
 		pageResult.setPage(1);
 		pageResult.setRows(30);
@@ -33,6 +36,12 @@ public class BuildingManagerController {
 		param = (param == null) ? new BuildingQueryParam() : param;
 		pageResult.setEntity(param);
 		List<Building> buildings = buildingService.list(pageResult);
-		return "manage/building/building-list";
+		
+		JsonResult<Building> jResult = new JsonResult<Building>();
+		jResult.setsEcho(1);
+		jResult.setiTotalRecords(pageResult.getTotalRecord());
+		jResult.setiTotalDisplayRecords(pageResult.getRows());
+		jResult.setAaData(buildings);
+		return jResult;
 	}
 }
