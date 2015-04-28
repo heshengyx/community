@@ -24,9 +24,11 @@
 			         "sLast":     "最后一页 "
 			     }
 			},
-			//"bProcessing": true,
-			//"bServerSide": true,
-			//"sServerMethod" : "POST",
+			"bProcessing": true,
+			"bServerSide": true,
+			"sServerMethod" : "POST",
+			"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
+			"sPaginationType": "bootstrap",
 			//"sPaginationType": "full_numbers",
 			/* "fnServerData": function ( sSource, aoData, fnCallback ) {
 	            $.ajax( {
@@ -37,45 +39,53 @@
 	                "success": fnCallback
 	            } );
 	        }, */
-			//"sAjaxSource": "${ctx}/manage/building/list",
+			"sAjaxSource": "${ctx}/manage/building/list",
 			"aoColumnDefs": [
 				{
 			 		sDefaultContent: '',
 			 		aTargets: [ '_all' ]
 			  	}
 			],
-			"iTotalRecords": 50,
-		    "iTotalDisplayRecords": 10,
-		    "sEcho":10,
-		    "aaData": [
-		        {"name": "Sitepoint", "url": "http://sitepoint.com", "editor" :{ "name" : "John Doe", "phone" : ["9191919", "1212121"], "email":[]}},
-		        {"name": "Flippa", "url": "http://flippa.com",  "editor": { "name": "Adam Smith", "email" : ["adam.smith@domain.com"], "phone":[] }}
-		    ],
-			/* "aoColumns": [
-				{ "sTitle": "楼盘名称", "mData": "buildingName" },
-	            { "sTitle": "建筑年代" },
-	            { "sTitle": "楼层" },
-	            { "sTitle": "状态" },
-	            { "sTitle": "操作"}
-	        ] */
-	        "aoColumns": [{
-	            "mData":"name",
-	            "sTitle": "Site name"
-	          },{
-	            "mData": "url",
-	            "mRender": function ( url, type, full )  {
-	              return  '<a href="'+url+'">' + url + '</a>';
-	            }
-	          },{
-	            "mData": "editor.name"
-	          },{
-	            "mData": "editor.phone"
-	          },{
-	            "mData":"editor",
-	            "mRender": function(data){
-	              return data.email.join("<br>");
-	            }
-	        }]
+			//"bJQueryUI": true,
+			"aoColumns": [
+				{
+				    "mDataProp": "id",
+				    "fnRender": function(data) {
+				    	var content = "<input type='checkbox' name='checkList' value='" + data.aData.id + "'>";
+				        return content;
+				    }
+				},
+				{ "mDataProp": "buildingName"},
+	            { "mDataProp": "buildingYear"},
+	            { "mDataProp": "buildingFloor"},
+	            { "mDataProp": "status", "fnRender": function(data) {
+	            	var content = "";
+	            	if (data.aData.status == "1") {
+	            		content += "<span class=\"label label-success\">Active</span>";
+	            	} else {
+	            		content += "<span class=\"label label-important\">Banned</span>";
+	            	}
+	            	return content;
+	            }},
+	            { "asSorting": [], "fnRender": function(data) {
+	            	var content = "";
+	            	content += "<a class=\"btn btn-success\" href=\"#\">";
+	            	content += "<i class=\"halflings-icon white zoom-in\"></i>";
+	            	content += "</a>";
+	            	content += "<a class=\"btn btn-info\" href=\"#\">";
+	            	content += "<i class=\"halflings-icon white edit\"></i>";
+	            	content += "</a>";
+	            	content += "<a class=\"btn btn-danger\" href=\"#\">";
+	            	content += "<i class=\"halflings-icon white trash\"></i>";
+	            	content += "</a>";
+		            return content;
+		        }}
+	        ],
+	        "fnInitComplete": function (oSettings, json) {
+	            $('<a href="#myModal" id="addFun" class="btn btn-primary" data-toggle="modal">新增</a>' + '&nbsp;' +
+	            '<a href="#" class="btn btn-primary" id="editFun">修改</a> ' + '&nbsp;' +
+	            '<a href="#" class="btn btn-danger" id="deleteFun">删除</a>' + '&nbsp;').appendTo($('.myBtnBox'));
+	        }
     	});
     });
     </script>
@@ -103,6 +113,16 @@
 					</div>
 					<div class="box-content">
 						<table class="table table-striped table-bordered" id="table-list">
+						  <thead>
+							  <tr>
+							  	  <th style="width:15px"><input type="checkbox" id='checkAll'></th>
+								  <th>楼盘名称</th>
+								  <th>建筑年代</th>
+								  <th>楼层</th>
+								  <th>状态</th>
+								  <th>操作</th>
+							  </tr>
+						  </thead>
 						  <tbody>
 							<tr>
 								<td colspan="5">Loading data from server</td>
