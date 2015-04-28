@@ -6,7 +6,7 @@
     <title>社区网-楼盘管理</title>
     <script type="text/javascript">
     $(document).ready(function() {
-    	//$('#table-list').dataTable();
+    	initModal();
     	$('#table-list').dataTable({
     		"oLanguage": {
 			     "sLengthMenu": "每页显示 _MENU_ 条记录",
@@ -27,7 +27,7 @@
 			"bProcessing": true,
 			"bServerSide": true,
 			"sServerMethod" : "POST",
-			"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
+			"sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 			"sPaginationType": "bootstrap",
 			//"sPaginationType": "full_numbers",
 			/* "fnServerData": function ( sSource, aoData, fnCallback ) {
@@ -85,9 +85,40 @@
 	            $('<a href="#myModal" id="addFun" class="btn btn-primary" data-toggle="modal">新增</a>' + '&nbsp;' +
 	            '<a href="#" class="btn btn-primary" id="editFun">修改</a> ' + '&nbsp;' +
 	            '<a href="#" class="btn btn-danger" id="deleteFun">删除</a>' + '&nbsp;').appendTo($('.myBtnBox'));
+	            $("#addFun").click(_init);
 	        }
     	});
     });
+    /**
+	 * 初始化弹出层
+	 */
+	function initModal() {
+	    $('#myModal').on('show', function () {
+	        $('body', document).addClass('modal-open');
+	        $('<div class="modal-backdrop fade in"></div>').appendTo($('body', document));
+	    });
+	    $('#myModal').on('hide', function () {
+	        $('body', document).removeClass('modal-open');
+	        $('div.modal-backdrop').remove();
+	    });
+	}
+	/**
+	 * 初始化
+	 * @private
+	 */
+	function _init() {
+	    resetFrom();
+	    $("#btnEdit").hide();
+	    $("#btnSave").show();
+	}
+	/**
+	 * 重置表单
+	 */
+	function resetFrom() {
+	    $('form').each(function (index) {
+	        $('form')[index].reset();
+	    });
+	}
     </script>
   </head>
   <body>
@@ -122,15 +153,43 @@
 								  <th>状态</th>
 								  <th>操作</th>
 							  </tr>
-						  </thead>
-						  <tbody>
-							<tr>
-								<td colspan="5">Loading data from server</td>
-							</tr>
-				          </tbody>   
+						  </thead> 
 					   </table>           
 					</div>
 				</div><!--/span-->
+				<!-- modal -->
+				<div id="myModal" class="modal hide fade" data-backdrop="false">
+			        <div class="modal-header">
+			            <button type="button" class="close" data-dismiss="modal"
+			                    aria-hidden="true">×
+			            </button>
+			            <h3 id="myModalLabel">用户信息</h3>
+			        </div>
+			        <div class="modal-body">
+			            <form class="form-horizontal" id="resForm">
+			                <input type="hidden" id="objectId"/>
+			                <div class="control-group">
+			                    <label class="control-label" for="inputName">昵称：</label> <input
+			                        type="text" id="inputName" name="name"/>
+			                </div>
+			                <div class="control-group">
+			                    <label class="control-label" for="inputJob">技能：</label> <input
+			                        type="text" id="inputJob" name="job"/>
+			                </div>
+			                <div class="control-group">
+			                    <label class="control-label" for="inputNote">备注：</label>
+			                    <textarea name="note" id="inputNote" cols="30" rows="4"></textarea>
+			                </div>
+			            </form>
+			        </div>
+			        <div class="modal-footer">
+			            <button class="btn btn-primary" id="btnSave">确定</button>
+			            <button class="btn btn-primary" id="btnEdit">保存</button>
+			            <button class="btn btn-danger" data-dismiss="modal"
+			                    aria-hidden="true">取消
+			            </button>
+			        </div>
+			    </div><!-- modal -->
 			</div><!--/row-->
 	</div><!--/.fluid-container-->
 	</body>

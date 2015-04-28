@@ -40,7 +40,7 @@ public class BuildingManagerController {
 		JsonResult<Building> jResult = new JsonResult<Building>();
 		jResult.setsEcho(1);
 		jResult.setiTotalRecords(pageResult.getTotalRecord());
-		jResult.setiTotalDisplayRecords(pageResult.getRows());
+		jResult.setiTotalDisplayRecords(pageResult.getTotalRecord());
 		jResult.setAaData(buildings);
 		return jResult;
 	}
