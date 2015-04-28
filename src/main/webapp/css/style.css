@@ -1,0 +1,26 @@
+.container-head {
+	border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid rgba(86,61,124,.2);
+  border-right: 1px solid rgba(86,61,124,.2);
+}
+.container-body {
+	padding-top: 10px;
+  padding-bottom: 10px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid rgba(86,61,124,.2);
+  border-right: 1px solid rgba(86,61,124,.2);
+  border-bottom: 1px solid rgba(86,61,124,.2);
+}
+.col-md-other {
+	border-left: 1px solid #ddd;
+	border-left: 1px solid rgba(86,61,124,.2);
+}
+.col-md-first h4, .col-md-other h4 {
+	margin-top: 10px;
+}
+.col-md-first hr, .col-md-other hr {
+	margin-top: 0px;
+}

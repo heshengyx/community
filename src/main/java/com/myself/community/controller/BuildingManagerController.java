@@ -28,20 +28,20 @@ public class BuildingManagerController {
 	
 	@RequestMapping("/list")
 	@ResponseBody
-	public Object list(BuildingQueryParam param) {
+	public Object list(BuildingQueryParam param, String draw) {
 		Page<BuildingQueryParam> pageResult = new Page<BuildingQueryParam>();
 		pageResult.setPage(1);
-		pageResult.setRows(30);
+		pageResult.setRows(5);
 
 		param = (param == null) ? new BuildingQueryParam() : param;
 		pageResult.setEntity(param);
 		List<Building> buildings = buildingService.list(pageResult);
 		
 		JsonResult<Building> jResult = new JsonResult<Building>();
-		jResult.setsEcho(1);
-		jResult.setiTotalRecords(pageResult.getTotalRecord());
-		jResult.setiTotalDisplayRecords(pageResult.getTotalRecord());
-		jResult.setAaData(buildings);
+		jResult.setDraw(draw);
+		jResult.setRecordsTotal(pageResult.getTotalRecord());
+		jResult.setRecordsFiltered(buildings.size());
+		jResult.setData(buildings);
 		return jResult;
 	}
 }

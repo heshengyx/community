@@ -4,7 +4,7 @@
     <excludes>
     	<pattern>/css/*</pattern>
     	<pattern>/js/*</pattern>
-    	<pattern>/img/*</pattern>
+    	<pattern>/images/*</pattern>
     	<pattern>/manage/login.jsp</pattern>
     </excludes>  
   

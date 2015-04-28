@@ -39,7 +39,7 @@
 		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
 
 	<!-- 这里设置静态的资源 -->
-	<mvc:resources location="/img/" mapping="/img/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
 	<mvc:resources location="/js/" mapping="/js/**" />
 	<mvc:resources location="/css/" mapping="/css/**" />
 
