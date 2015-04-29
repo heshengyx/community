@@ -8,8 +8,9 @@
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
     <script type="text/javascript">
+    var table;
     $(document).ready(function() {
-    	var t = $('#table-list').DataTable({
+    	table = $('#table-list').DataTable({
     		"language": {
                 "lengthMenu": "每页 _MENU_ 条记录",
                 "zeroRecords": "没有找到记录",
@@ -28,7 +29,10 @@
     		"pagingType":  "full_numbers",
     		"processing": true,
             "serverSide": true,
-			"ajax": "${ctx}/manage/building/list",
+			"ajax": {
+				"url": "${ctx}/manage/building/list",
+				"type": "POST"
+			},
 			"order": [[ 3, "desc" ]],
 			"columnDefs": [
 			    {
@@ -61,7 +65,9 @@
 	            	"searchable": false,
 			    	"orderable": false,
 	            	"render": function(data, type, row) {
-		                var content = "编辑 删除";
+		                var content = "";
+		                content += "<a href=\"javascript:void(0);\" onclick=\"editData('" + data.id + "')\">编辑</a>&nbsp;";
+		                content += "<a href=\"javascript:void(0);\" onclick=\"deleteData('" + data.id + "')\">删除</a>";
 		            	return content;
 		            },
 		            "targets": [5]
@@ -77,10 +83,15 @@
 	            { "data": null }
 	        ],
 	        initComplete: function () {
-                $("#mytool").append('<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>');
+                $("#mytool").append('<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>');
+                $("#add-btn").on("click", clear);
             }
     	});
     	$("#save-btn").click(saveData);
+    	/* $("#add-btn").click(function() {
+    		$("#myModalLabel").text("新增楼盘");
+    		clear();
+    	}); */
      	/* t.on('order.dt search.dt',
     		    function() {
     		        t.column(1, {
@@ -92,27 +103,74 @@
     	}).draw(); */
     });
     function saveData() {
-    	var addJson = {
+    	var jsonData = {
+    		"dataId": $("#dataId").val(),
             "buildingName": $("#buildingName").val(),
             "buildingYear": $("#buildingYear").val(),
             "buildingFloor": $("#buildingFloor").val()
         };
+    	saveJsonData(jsonData);
     }
-    function saveAjaxData(obj) {
+    function saveJsonData(obj) {
+    	var url = "${ctx}/manage/building/save";
+    	if (obj.dataId) {
+    		url = "${ctx}/manage/building/update";
+    	}
         $.ajax({
-            url:url,
+            url: url,
             data: {
+            	"id": obj.dataId,
                 "buildingName": obj.buildingName,
                 "buildingYear": obj.buildingYear,
                 "buildingFloor": obj.buildingFloor
             }, success: function (data) {
                 table.ajax.reload();
                 $("#myModal").modal("hide");
-                $("#myModalLabel").text("新增");
                 clear();
-                //console.log("结果" + data);
             }
         });
+    }
+    /**
+     * 编辑数据
+     */
+    function editData(id) {
+        $.ajax({
+            url: "${ctx}/manage/building/getData",
+            dataType : "json",
+            data: {
+                "id": id
+            }, success: function (data) { //dataId
+            	$("#dataId").val(data.data.id);
+            	$("#buildingName").val(data.data.buildingName);
+            	$("#buildingYear").val(data.data.buildingYear);
+            	$("#buildingFloor").val(data.data.buildingFloor);
+            	$("#myModalLabel").text("修改楼盘");
+            	$("#myModal").modal("show");
+            }
+        });
+    }
+    /**
+     * 删除数据
+     */
+    function deleteData(id) {
+        $.ajax({
+            url: "${ctx}/manage/building/delete",
+            data: {
+                "id": id
+            }, success: function (data) {
+                table.ajax.reload();
+            }
+        });
+    }
+    /**
+     * 清除
+     */
+    function clear() {
+    	$("#myModalLabel").text("新增楼盘");
+    	$("#dataId").val("");
+        $("#buildingName").val("");
+        $("#buildingYear").val("");
+        $("#buildingFloor").val("");
     }
     </script>
   </head>
@@ -140,6 +198,7 @@
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 		                        aria-hidden="true">&times;</span></button>
 		                <h4 class="modal-title" id="myModalLabel">新增楼盘</h4>
+		                <input type="hidden" id="dataId">
 		            </div>
 		            <div class="modal-body">
 		                <div class="form-group">

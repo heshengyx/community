@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.myself.community.mapper.BuildingMapper">
 	<resultMap type="building" id="buildingResult">
-		<id column="ID" property="id" jdbcType="NUMERIC" />
+		<id column="ID" property="id" jdbcType="VARCHAR" />
 <result column="BUILDING_NAME" property="buildingName" jdbcType="VARCHAR" />
 <result column="BUILDING_YEAR" property="buildingYear" jdbcType="VARCHAR" />
 <result column="BUILDING_FLOOR" property="buildingFloor" jdbcType="VARCHAR" />
@@ -12,12 +12,16 @@
 <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<select id="getBuilding" parameterType="int" resultMap="buildingResult">
-		SELECT * FROM CLAZZ WHERE ID=#{id, jdbcType=NUMERIC}
+	<select id="getData" parameterType="building" resultMap="buildingResult">
+		SELECT * FROM BUILDING WHERE ID=#{id, jdbcType=VARCHAR}
 	</select>
 	<select id="list" parameterType="pageResult" resultMap="buildingResult">
 		SELECT * FROM BUILDING 
 		<where>
+<if test="entity.buildingName != null and entity.buildingName != ''">
+	<!-- and BUILDING_NAME like CONCAT('%','${buildingName}','%') -->
+	and BUILDING_NAME like '%'||#{entity.buildingName}||'%'
+</if>
 <if test="entity.status != null and entity.status != ''">
 	and STATUS = #{entity.status}
 </if>
@@ -28,36 +32,38 @@
 		order by CREATE_TIME desc
 	</select>
 	
-	<insert id="save" parameterType="building" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO CLAZZ (NAME, TSTATUS, CREATE_TIME, UPDATE_TIME, REMARKS)
+	<insert id="save" parameterType="building">
+		INSERT INTO BUILDING (ID, BUILDING_NAME, BUILDING_YEAR, BUILDING_FLOOR, STATUS, CREATE_TIME, REMARKS)
 		VALUES (
-#{name, jdbcType=VARCHAR},
+#{id, jdbcType=VARCHAR},
+#{buildingName, jdbcType=VARCHAR},
+#{buildingYear, jdbcType=VARCHAR},
+#{buildingFloor, jdbcType=VARCHAR},
 #{status, jdbcType=VARCHAR},
 #{createTime, jdbcType=TIMESTAMP},
-#{updateTime, jdbcType=TIMESTAMP},
 #{remarks, jdbcType=VARCHAR})
 	</insert>
 	
 	<update id="update" parameterType="building">
-		update CLAZZ
+		update BUILDING
 		<set>
-<if test="className != null">
-	CLASS_NAME = #{className, jdbcType=VARCHAR},
+<if test="buildingName != null">
+	BUILDING_NAME = #{buildingName, jdbcType=VARCHAR},
 </if>
-<if test="tableName != null">
-	TABLE_NAME = #{tableName, jdbcType=VARCHAR},
+<if test="buildingYear != null">
+	BUILDING_YEAR = #{buildingYear, jdbcType=VARCHAR},
 </if>
-<if test="title != null">
-	TITLE = #{title, jdbcType=VARCHAR},
+<if test="buildingFloor != null">
+	BUILDING_FLOOR = #{buildingFloor, jdbcType=VARCHAR},
 </if>
 <if test="status != null">
 	STATUS = #{status, jdbcType=VARCHAR},
 </if>
 
 		</set>
-		where id = #{id, jdbcType=NUMERIC}
+		where id = #{id, jdbcType=VARCHAR}
 	</update>
-	<delete id="delete" parameterType="int">
-		delete from CLAZZ where id = #{id, jdbcType=NUMERIC}
+	<delete id="delete" parameterType="building">
+		delete from BUILDING where id = #{id, jdbcType=VARCHAR}
 	</delete>
 </mapper>
