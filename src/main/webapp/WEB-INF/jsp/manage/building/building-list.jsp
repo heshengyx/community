@@ -105,9 +105,9 @@
     function saveData() {
     	var jsonData = {
     		"dataId": $("#dataId").val(),
-            "buildingName": $("#buildingName").val(),
-            "buildingYear": $("#buildingYear").val(),
-            "buildingFloor": $("#buildingFloor").val()
+            "buildingName": $("#inputBuildingName").val(),
+            "buildingYear": $("#inputBuildingYear").val(),
+            "buildingFloor": $("#inputBuildingFloor").val()
         };
     	saveJsonData(jsonData);
     }
@@ -140,10 +140,10 @@
             data: {
                 "id": id
             }, success: function (data) { //dataId
-            	$("#dataId").val(data.data.id);
-            	$("#buildingName").val(data.data.buildingName);
-            	$("#buildingYear").val(data.data.buildingYear);
-            	$("#buildingFloor").val(data.data.buildingFloor);
+            	$("#inputDataId").val(data.data.id);
+            	$("#inputBuildingName").val(data.data.buildingName);
+            	$("#inputBuildingYear").val(data.data.buildingYear);
+            	$("#inputBuildingFloor").val(data.data.buildingFloor);
             	$("#myModalLabel").text("修改楼盘");
             	$("#myModal").modal("show");
             }
@@ -167,10 +167,10 @@
      */
     function clear() {
     	$("#myModalLabel").text("新增楼盘");
-    	$("#dataId").val("");
-        $("#buildingName").val("");
-        $("#buildingYear").val("");
-        $("#buildingFloor").val("");
+    	$("#inputDataId").val("");
+        $("#inputBuildingName").val("");
+        $("#inputBuildingYear").val("");
+        $("#inputBuildingFloor").val("");
     }
     </script>
   </head>
@@ -198,18 +198,39 @@
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 		                        aria-hidden="true">&times;</span></button>
 		                <h4 class="modal-title" id="myModalLabel">新增楼盘</h4>
-		                <input type="hidden" id="dataId">
+		                <input type="hidden" id="inputDataId">
 		            </div>
 		            <div class="modal-body">
-		                <div class="form-group">
-		                    <input type="text" class="form-control" id="buildingName" placeholder="楼盘名称">
+		            	<form class="form-horizontal" role="form">
+		            	<div class="form-group">
+		                	<label for="inputDistrictId" class="col-sm-2 control-label">区域</label>
+		                	<div class="col-sm-10">
+		                	<select class="form-control" id="inputDistrictId">
+						         <option>皇岗</option>
+						         <option>景田</option>
+						         <option>梅林</option>
+						    </select>
+		                	</div>
 		                </div>
 		                <div class="form-group">
-		                    <input type="text" class="form-control" id="buildingYear" placeholder="建筑年代">
+		                	<label for="inputBuildingName" class="col-sm-2 control-label">楼盘名称</label>
+		                	<div class="col-sm-10">
+		                	<input type="text" class="form-control" id="inputBuildingName">
+		                	</div>
 		                </div>
 		                <div class="form-group">
-		                    <input type="text" class="form-control" id="buildingFloor" placeholder="楼层">
-		                </div>		                
+		                	<label for="inputBuildingYear" class="col-sm-2 control-label">建筑年代</label>
+		                	<div class="col-sm-10">
+		                	<input type="text" class="form-control" id="inputBuildingYear">
+		                	</div>
+		                </div>
+		                <div class="form-group">
+		                	<label for="inputBuildingFloor" class="col-sm-2 control-label">楼层</label>
+		                	<div class="col-sm-10">
+		                	<input type="text" class="form-control" id="inputBuildingFloor">
+		                	</div>
+		                </div>
+		                </form>		                
 		            </div>
 		            <div class="modal-footer">
 		            	<button type="button" class="btn btn-primary" id="save-btn">保存</button>
