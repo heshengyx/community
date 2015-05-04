@@ -12,6 +12,7 @@
 		<typeAlias type="com.myself.community.entity.Permission" alias="permission" />
 		
 		<typeAlias type="com.myself.community.entity.Building" alias="building" />
+		<typeAlias type="com.myself.community.entity.Region" alias="region" />
 		<!-- [typeAlias] -->
 	</typeAliases>
 	
