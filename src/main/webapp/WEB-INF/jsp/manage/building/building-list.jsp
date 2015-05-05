@@ -7,6 +7,7 @@
     <link href="${ctx}/css/dataTables.bootstrap.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
+    <script src="${ctx}/js/format.js"></script>
     <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -62,6 +63,12 @@
 		            "targets": [4]
 	            },
 	            {
+	            	"render": function(data, type, row) {
+		            	return to_date_hms(data.createTime);
+		            },
+		            "targets": [5]
+	            },
+	            {
 	            	"searchable": false,
 			    	"orderable": false,
 	            	"render": function(data, type, row) {
@@ -70,7 +77,7 @@
 		                content += "<a href=\"javascript:void(0);\" onclick=\"deleteData('" + data.id + "')\">删除</a>";
 		            	return content;
 		            },
-		            "targets": [5]
+		            "targets": [6]
 	            }
 			],
 			"columns": [
@@ -80,6 +87,7 @@
 	            { "data": "buildingYear" },
 	            { "data": "buildingFloor" },
 	            { "data": "status" },
+	            { "data": null },
 	            { "data": null }
 	        ],
 	        initComplete: function () {
@@ -184,6 +192,7 @@
 				  <th>建筑年代</th>
 				  <th>楼层</th>
 				  <th>状态</th>
+				  <th>创建时间</th>
 				  <th>操作</th>
 			  </tr>
 		  </thead>

@@ -33,7 +33,7 @@
 				"url": "${ctx}/manage/region/list",
 				"type": "POST"
 			},
-			"order": [[ 3, "desc" ]],
+			"order": [[ 4, "desc" ]],
 			"columnDefs": [
 			    {
 			    	"searchable": false,
@@ -59,7 +59,7 @@
 		            	}
 		            	return content;
 		            },
-		            "targets": [4]
+		            "targets": [3]
 	            },
 	            {
 	            	"searchable": false,
@@ -76,10 +76,10 @@
 			"columns": [
 	            { "data": null},
 	            /* { "data": "id"}, */
-	            { "data": "buildingName" },
-	            { "data": "buildingYear" },
-	            { "data": "buildingFloor" },
+	            { "data": "name" },
+	            { "data": "code" },
 	            { "data": "status" },
+	            { "data": "createTime" },
 	            { "data": null }
 	        ],
 	        initComplete: function () {
@@ -112,9 +112,9 @@
     	saveJsonData(jsonData);
     }
     function saveJsonData(obj) {
-    	var url = "${ctx}/manage/building/save";
+    	var url = "${ctx}/manage/region/save";
     	if (obj.dataId) {
-    		url = "${ctx}/manage/building/update";
+    		url = "${ctx}/manage/region/update";
     	}
         $.ajax({
             url: url,
