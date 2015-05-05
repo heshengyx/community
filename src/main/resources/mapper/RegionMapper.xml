@@ -57,6 +57,7 @@
 		</set>
 		where id = #{id, jdbcType=VARCHAR}
 	</update>
+	
 	<delete id="delete" parameterType="region">
 		delete from REGION where id = #{id, jdbcType=VARCHAR}
 	</delete>
