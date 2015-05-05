@@ -3,9 +3,9 @@
 <mapper namespace="com.myself.community.mapper.RegionMapper">
 	<resultMap type="region" id="regionResult">
 		<id column="ID" property="id" jdbcType="VARCHAR" />
-<result column="BUILDING_NAME" property="buildingName" jdbcType="VARCHAR" />
-<result column="BUILDING_YEAR" property="buildingYear" jdbcType="VARCHAR" />
-<result column="BUILDING_FLOOR" property="buildingFloor" jdbcType="VARCHAR" />
+<result column="NAME" property="name" jdbcType="VARCHAR" />
+<result column="CODE" property="code" jdbcType="VARCHAR" />
+<result column="LEVEL" property="level" jdbcType="VARCHAR" />
 <result column="STATUS" property="status" jdbcType="VARCHAR" />
 <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
@@ -20,7 +20,7 @@
 		<where>
 <if test="entity.name != null and entity.name != ''">
 	<!-- and BUILDING_NAME like CONCAT('%','${buildingName}','%') -->
-	and BUILDING_NAME like '%'||#{entity.buildingName}||'%'
+	and NAME like '%'||#{entity.name}||'%'
 </if>
 <if test="entity.status != null and entity.status != ''">
 	and STATUS = #{entity.status}
@@ -48,19 +48,12 @@
 	<update id="update" parameterType="region">
 		update REGION
 		<set>
-<if test="buildingName != null">
-	BUILDING_NAME = #{buildingName, jdbcType=VARCHAR},
-</if>
-<if test="buildingYear != null">
-	BUILDING_YEAR = #{buildingYear, jdbcType=VARCHAR},
-</if>
-<if test="buildingFloor != null">
-	BUILDING_FLOOR = #{buildingFloor, jdbcType=VARCHAR},
+<if test="name != null">
+	NAME = #{name, jdbcType=VARCHAR},
 </if>
 <if test="status != null">
 	STATUS = #{status, jdbcType=VARCHAR},
 </if>
-
 		</set>
 		where id = #{id, jdbcType=VARCHAR}
 	</update>
