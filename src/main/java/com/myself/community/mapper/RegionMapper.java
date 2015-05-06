@@ -12,5 +12,6 @@ public interface RegionMapper {
 	int update(Region param);
 	int delete(Region param);
 	Region getData(Region param);
+	List<Region> listAll(RegionQueryParam param);
 	List<Region> list(Page<RegionQueryParam> param);
 }

@@ -12,5 +12,6 @@ public interface RegionDao {
 	int update(Region param);
 	int delete(Region param);
 	Region getData(Region param);
+	List<Region> list(RegionQueryParam param);
 	List<Region> list(Page<RegionQueryParam> param);
 }

@@ -39,4 +39,9 @@ public class RegionDaoImpl extends BaseDao<RegionMapper> implements RegionDao {
 		return mapper.list(param);
 	}
 
+	public List<Region> list(RegionQueryParam param) {
+		RegionMapper mapper = getMapper(RegionMapper.class);
+		return mapper.listAll(param);
+	}
+
 }

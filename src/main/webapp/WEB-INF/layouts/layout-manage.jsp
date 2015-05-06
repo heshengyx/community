@@ -53,15 +53,17 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="${ctx}/manage/building">楼盘管理 <span class="sr-only">(current)</span></a></li>
-            <li><a href="${ctx}/manage/region">地区管理</a></li>
+            <%-- li class="active"><a href="${ctx}/manage/building">楼盘管理 <span class="sr-only">(current)</span></a></li> --%>
+            <li><a href="${ctx}/manage/building">楼盘管理 <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">地区管理</a></li>
             <li><a href="#">Analytics</a></li>
             <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
+            <li><a href="${ctx}/manage/province">省份管理</a></li>
+            <li><a href="${ctx}/manage/city">市县管理</a></li>
+            <li><a href="${ctx}/manage/district">城区管理</a></li>
+            <li><a href="${ctx}/manage/town">村镇管理</a></li>
             <li><a href="">Another nav item</a></li>
             <li><a href="">More navigation</a></li>
           </ul>
@@ -69,6 +71,13 @@
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
             <li><a href="">Another nav item</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+          	<li><a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">地区管理</a></li>   
+          </ul>
+          <ul class="nav collapse" id="collapseExample">
+          	<li><a href="${ctx}/manage/province">省份管理</a></li>
+            <li><a href="${ctx}/manage/city">市县管理</a></li>
           </ul>
         </div>
         <!-- content -->

@@ -3,10 +3,11 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
   <head>
-    <title>社区网-地区管理</title>
+    <title>社区网-市县管理</title>
     <link href="${ctx}/css/dataTables.bootstrap.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
+    <script src="${ctx}/js/format.js"></script>
     <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -30,7 +31,7 @@
     		"processing": true,
             "serverSide": true,
 			"ajax": {
-				"url": "${ctx}/manage/region/list",
+				"url": "${ctx}/manage/city/list",
 				"type": "POST"
 			},
 			"order": [[ 4, "desc" ]],
@@ -44,11 +45,6 @@
 		            },
 		            "targets": [0]
 	            },
-	            /* {
-			    	"searchable": false,
-			    	"orderable": false,
-		            "targets": [1]
-	            }, */
 	            {
 	            	"render": function(data, type, row) {
 		                var content = "";
@@ -107,28 +103,43 @@
     		            cell.innerHTML = i + 1;
     		        });
     	}).draw(); */
+    	$.ajax({
+		  	url: "${ctx}/manage/region/select",
+		  	type : "POST",
+ 			dataType : "json",
+ 			data: {
+ 				"level": "1"
+ 			},
+		  	success: function(data) {
+		  		for(var i = 0; i < data.data.length; i++){
+					$("#inputProvince").append('<option value="' + data.data[i].id + '"> ' + data.data[i].code + '-' + data.data[i].name + '</option>');
+				}
+  			}
+		});
     });
     function saveData() {
     	var jsonData = {
     		"dataId": $("#dataId").val(),
-            "buildingName": $("#inputBuildingName").val(),
-            "buildingYear": $("#inputBuildingYear").val(),
-            "buildingFloor": $("#inputBuildingFloor").val()
+    		"parentId": $("#inputProvince").val(),
+            "name": $("#inputName").val(),
+            "code": $("#inputCode").val(),
+            "status": $("input[name='status']:checked").val()
         };
     	saveJsonData(jsonData);
     }
     function saveJsonData(obj) {
-    	var url = "${ctx}/manage/region/save";
+    	var url = "${ctx}/manage/city/save";
     	if (obj.dataId) {
-    		url = "${ctx}/manage/region/update";
+    		url = "${ctx}/manage/city/update";
     	}
         $.ajax({
             url: url,
             data: {
             	"id": obj.dataId,
-                "buildingName": obj.buildingName,
-                "buildingYear": obj.buildingYear,
-                "buildingFloor": obj.buildingFloor
+            	"parentId": obj.parentId,
+                "name": obj.name,
+                "code": obj.code,
+                "status": obj.status
             }, success: function (data) {
                 table.ajax.reload();
                 $("#myModal").modal("hide");
@@ -141,7 +152,7 @@
      */
     function editData(id) {
         $.ajax({
-            url: "${ctx}/manage/building/getData",
+            url: "${ctx}/manage/province/getData",
             dataType : "json",
             data: {
                 "id": id
@@ -150,7 +161,7 @@
             	$("#inputBuildingName").val(data.data.buildingName);
             	$("#inputBuildingYear").val(data.data.buildingYear);
             	$("#inputBuildingFloor").val(data.data.buildingFloor);
-            	$("#myModalLabel").text("修改楼盘");
+            	$("#myModalLabel").text("修改省份");
             	$("#myModal").modal("show");
             }
         });
@@ -160,7 +171,7 @@
      */
     function deleteData(id) {
         $.ajax({
-            url: "${ctx}/manage/building/delete",
+            url: "${ctx}/manage/province/delete",
             data: {
                 "id": id
             }, success: function (data) {
@@ -172,11 +183,11 @@
      * 清除
      */
     function clear() {
-    	$("#myModalLabel").text("新增楼盘");
+    	$("#myModalLabel").text("新增市县");
     	$("#inputDataId").val("");
-        $("#inputBuildingName").val("");
-        $("#inputBuildingYear").val("");
-        $("#inputBuildingFloor").val("");
+        $("#inputName").val("");
+        $("#inputCode").val("");
+        //$("#inputStatus1").val("");
     }
     </script>
   </head>
@@ -186,7 +197,7 @@
 		  <thead>
 			  <tr>
 			  	  <th style="width:10px"><input type="checkbox" id='checkAll'></th>
-				  <th>地区名称</th>
+				  <th>市县名称</th>
 				  <th>代码</th>
 				  <th>状态</th>
 				  <th>创建时间</th>
@@ -203,37 +214,42 @@
 		            <div class="modal-header">
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 		                        aria-hidden="true">&times;</span></button>
-		                <h4 class="modal-title" id="myModalLabel">新增地区</h4>
+		                <h4 class="modal-title" id="myModalLabel">新增市县</h4>
 		                <input type="hidden" id="inputDataId">
 		            </div>
 		            <div class="modal-body">
 		            	<form class="form-horizontal" role="form">
 		            	<div class="form-group">
-		                	<label for="inputDistrictId" class="col-sm-2 control-label">区域</label>
+		                	<label for="inputProvince" class="col-sm-2 control-label">省份</label>
 		                	<div class="col-sm-10">
-		                	<select class="form-control" id="inputDistrictId">
-						         <option>皇岗</option>
-						         <option>景田</option>
-						         <option>梅林</option>
+		                	<select class="form-control" id="inputProvince">
+						         <option value="0">选择省份</option>
 						    </select>
 		                	</div>
 		                </div>
 		                <div class="form-group">
-		                	<label for="inputBuildingName" class="col-sm-2 control-label">楼盘名称</label>
+		                	<label for="inputName" class="col-sm-2 control-label">市县名称</label>
 		                	<div class="col-sm-10">
-		                	<input type="text" class="form-control" id="inputBuildingName">
+		                	<input type="text" class="form-control" id="inputName">
 		                	</div>
 		                </div>
 		                <div class="form-group">
-		                	<label for="inputBuildingYear" class="col-sm-2 control-label">建筑年代</label>
+		                	<label for="inputCode" class="col-sm-2 control-label">市县代码</label>
 		                	<div class="col-sm-10">
-		                	<input type="text" class="form-control" id="inputBuildingYear">
+		                	<input type="text" class="form-control" id="inputCode">
 		                	</div>
 		                </div>
 		                <div class="form-group">
-		                	<label for="inputBuildingFloor" class="col-sm-2 control-label">楼层</label>
+		                	<label for="inputStatus" class="col-sm-2 control-label">状态</label>
 		                	<div class="col-sm-10">
-		                	<input type="text" class="form-control" id="inputBuildingFloor">
+		                	<div class="btn-group" data-toggle="buttons">
+							   <label class="btn btn-primary">
+							      <input type="radio" name="status" value="1"> 有效
+							   </label>
+							   <label class="btn btn-primary">
+							      <input type="radio" name="status" value="0"> 禁用
+							   </label>
+							</div>
 		                	</div>
 		                </div>
 		                </form>		                
