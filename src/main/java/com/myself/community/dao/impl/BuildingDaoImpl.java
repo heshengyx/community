@@ -39,4 +39,9 @@ public class BuildingDaoImpl extends BaseDao<BuildingMapper> implements Building
 		return mapper.update(param);
 	}
 
+	public List<Building> list(BuildingQueryParam param) {
+		BuildingMapper mapper = getMapper(BuildingMapper.class);
+		return mapper.listAll(param);
+	}
+
 }

@@ -2,8 +2,6 @@ package com.myself.community.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +29,7 @@ public class BuildingManagerController {
 	
 	@RequestMapping("/list")
 	@ResponseBody
-	public Object list(BuildingQueryParam param, HttpServletRequest request) {
-		String searchValue = request.getParameter("search[value]");
-		param.setBuildingName(searchValue);
+	public Object list(BuildingQueryParam param) {
 		Page<BuildingQueryParam> pageResult = new Page<BuildingQueryParam>();
 		pageResult.setPage(param.getPage());
 		pageResult.setRows(param.getLength());
@@ -47,6 +43,18 @@ public class BuildingManagerController {
 		jResult.setRecordsFiltered(pageResult.getTotalRecord());
 		jResult.setData(buildings);
 		return jResult;
+	}
+	
+	@RequestMapping("/search")
+	@ResponseBody
+	public Object search(BuildingQueryParam param) {
+		List<Building> buildings = null;
+		try {
+			buildings = buildingService.list(param);
+		} catch (Exception e) {
+			
+		}
+		return buildings;
 	}
 	
 	@RequestMapping("/save")

@@ -42,5 +42,9 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingDao.update(param);
 	}
 
+	public List<Building> list(BuildingQueryParam param) {
+		return buildingDao.list(param);
+	}
+
 	
 }

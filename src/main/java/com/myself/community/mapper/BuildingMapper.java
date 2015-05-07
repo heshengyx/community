@@ -12,5 +12,6 @@ public interface BuildingMapper {
 	int update(Building param);
 	int delete(Building param);
 	Building getData(Building param);
+	List<Building> listAll(BuildingQueryParam param);
 	List<Building> list(Page<BuildingQueryParam> param);
 }

@@ -5,9 +5,13 @@
   <head>
     <title>社区网-省份管理</title>
     <link href="${ctx}/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="${ctx}/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
     <script src="${ctx}/js/format.js"></script>
+    <script src="${ctx}/js/bootstrap-typeahead.js"></script>
+    <script src="${ctx}/js/bootstrap-datepicker.min.js"></script>
+    <script src="${ctx}/locales/bootstrap-datepicker.zh-CN.min.js"></script>
     <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -26,7 +30,8 @@
 			         "last":     "最后一页 "
 			     }
             },
-            "dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            //"dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            "dom": "<'toolbar'>rt<'bottom'<'row'<'col-xs-2'i><'col-xs-2'l><'col-xs-8'p>><'clear'>>",
     		"pagingType":  "full_numbers",
     		"processing": true,
             "serverSide": true,
@@ -103,6 +108,40 @@
     		            cell.innerHTML = i + 1;
     		        });
     	}).draw(); */
+    	$("#s-inputProvinceName").typeahead({
+            ajax: {
+                url: "${ctx}/manage/region/list",
+                timeout: 300,                   // 延时
+                method: 'post',
+                triggerLength: 1,               // 输入几个字符之后，开始请求
+                loadingClass: null,             // 加载数据时, 元素使用的样式类
+                preDispatch: function (query) { // 发出请求之前，调用的预处理方法
+                	var para = { name: $("#s-inputProvinceName").val(), level: "1"};
+                    para.query = query;
+                    return para;
+                },
+                //preDispatch: null,
+                preProcess: function (result) { // Ajax 请求完成之后，调用的后处理方法
+                	return result;
+                }
+            },
+            //source: mySource,
+            display: "name",     // 默认的对象属性名称为 name 属性
+            val: "id",           // 默认的标识属性名称为 id 属性
+            items: 8,            // 最多显示项目数量
+            itemSelected: function (item, val, text) {      // 当选中一个项目的时候，回调函数
+                
+            }
+        });
+    	$('#s-inputStartDate').datepicker({
+    		language: 'zh-CN',
+    		format: 'yyyy-mm-dd',
+    		startDate: '-3d'
+    	});
+    	$('#s-inputEndDate').datepicker({
+    		language: 'zh-CN',
+    		format: 'yyyy-mm-dd'
+    	});
     });
     function saveData() {
     	var jsonData = {
@@ -178,6 +217,22 @@
   </head>
   <body>
 	<div class="box-content">
+		<form class="form-inline" role="form">
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputProvinceName">省份名称</label>
+		  <input type="text" class="form-control" id="s-inputProvinceName" placeholder="省份名称" autocomplete="off">
+		</div>
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputStartDate">开始日期</label>
+		  <input type="text" class="form-control" id="s-inputStartDate" placeholder="开始日期" style="width:120px;">
+		</div>
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputEndDate">结束日期</label>
+		  <input type="text" class="form-control" id="s-inputEndDate" placeholder="结束日期" style="width:120px;">
+		</div>
+		<button type="button" id="search-btn" class="btn btn-info btn-sm">搜索</button>
+		<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>
+		</form>
 		<table class="table table-striped table-bordered" id="table-list">
 		  <thead>
 			  <tr>

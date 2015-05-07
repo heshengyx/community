@@ -28,6 +28,7 @@
             },
             "dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
     		"pagingType":  "full_numbers",
+    		"filter": false, 
     		"processing": true,
             "serverSide": true,
 			"ajax": {
@@ -270,11 +271,11 @@
 		                	<label for="inputStatus" class="col-sm-2 control-label">状态</label>
 		                	<div class="col-sm-10">
 		                	<div class="btn-group" data-toggle="buttons">
-							   <label class="btn btn-primary">
-							      <input type="radio" name="status" value="1"> 有效
+		                	   <label for="inputValid" class="inline radio">
+							   <input type="radio" id="inputValid" name="status" value="1"> 有效
 							   </label>
-							   <label class="btn btn-primary">
-							      <input type="radio" name="status" value="0"> 禁用
+							   <label for="inputForbidden" class="inline radio">
+							   <input type="radio" id="inputForbidden" name="status" value="0"> 禁用
 							   </label>
 							</div>
 		                	</div>

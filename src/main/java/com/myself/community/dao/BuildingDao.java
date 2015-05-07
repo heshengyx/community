@@ -12,5 +12,6 @@ public interface BuildingDao {
 	int update(Building param);
 	int delete(Building param);
 	Building getData(Building param);
+	List<Building> list(BuildingQueryParam param);
 	List<Building> list(Page<BuildingQueryParam> param);
 }

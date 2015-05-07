@@ -15,6 +15,20 @@
 	<select id="getData" parameterType="building" resultMap="buildingResult">
 		SELECT * FROM BUILDING WHERE ID=#{id, jdbcType=VARCHAR}
 	</select>
+	
+	<select id="listAll" parameterType="building" resultMap="buildingResult">
+		SELECT * FROM BUILDING 
+		<where>
+<if test="buildingName != null and buildingName != ''">
+	<!-- and BUILDING_NAME like CONCAT('%','${buildingName}','%') -->
+	and BUILDING_NAME like '%'||#{buildingName}||'%'
+</if>
+<if test="status != null and status != ''">
+	and STATUS = #{status}
+</if>
+</where> 
+		order by CREATE_TIME desc
+	</select>
 	<select id="list" parameterType="pageResult" resultMap="buildingResult">
 		SELECT * FROM BUILDING 
 		<where>
@@ -25,8 +39,11 @@
 <if test="entity.status != null and entity.status != ''">
 	and STATUS = #{entity.status}
 </if>
-<if test="entity.createTime != null and entity.createTime != ''">
-	and to_char(CREATE_TIME, 'YYYY-MM-DD') = #{entity.createTime}
+<if test="entity.startDate != null and entity.startDate != ''">
+	<![CDATA[ and to_char(CREATE_TIME, 'YYYY-MM-DD') >= #{entity.startDate} ]]>
+</if>
+<if test="entity.endDate != null and entity.endDate != ''">
+	<![CDATA[ and to_char(CREATE_TIME, 'YYYY-MM-DD') <= #{entity.endDate} ]]>
 </if>
 </where> 
 		order by CREATE_TIME desc

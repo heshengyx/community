@@ -111,8 +111,8 @@
  				"level": "1"
  			},
 		  	success: function(data) {
-		  		for(var i = 0; i < data.data.length; i++){
-					$("#inputProvince").append('<option value="' + data.data[i].id + '"> ' + data.data[i].code + '-' + data.data[i].name + '</option>');
+		  		for(var i = 0; i < data.length; i++){
+					$("#inputProvince").append('<option value="' + data[i].id + '"> ' + data[i].code + '-' + data[i].name + '</option>');
 				}
   			}
 		});

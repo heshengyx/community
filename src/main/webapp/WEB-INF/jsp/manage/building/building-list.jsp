@@ -5,9 +5,13 @@
   <head>
     <title>社区网-楼盘管理</title>
     <link href="${ctx}/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="${ctx}/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
     <script src="${ctx}/js/format.js"></script>
+    <script src="${ctx}/js/bootstrap-typeahead.js"></script>
+    <script src="${ctx}/js/bootstrap-datepicker.min.js"></script>
+    <script src="${ctx}/locales/bootstrap-datepicker.zh-CN.min.js"></script>
     <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -26,10 +30,16 @@
 			         "last":     "最后一页 "
 			     }
             },
-            "dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            //"dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            "dom": "<'toolbar'>rt<'bottom'<'row'<'col-xs-2'i><'col-xs-2'l><'col-xs-8'p>><'clear'>>",
+            //"dom": '<"toolbar">rt<"bottom"ilp<"clear">>',
     		"pagingType":  "full_numbers",
+    		//"scrollX": "100%",
+    		//"scrollXInner": "100%",
+    		"filter": true, 
     		"processing": true,
             "serverSide": true,
+            //"serverData": serverData,
 			"ajax": {
 				"url": "${ctx}/manage/building/list",
 				"type": "POST"
@@ -91,11 +101,34 @@
 	            { "data": null }
 	        ],
 	        initComplete: function () {
-                $("#mytool").append('<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>');
+                //$("#mytool").append('<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>');
                 $("#add-btn").on("click", clear);
             }
     	});
+    	//$("div.toolbar").html('<b>Custom tool bar! Text/images etc.');
     	$("#save-btn").click(saveData);
+    	$("#search-btn").click(function() {
+    		/* $.ajax({
+	            url: "${ctx}/manage/building/list",
+	            dataType : "json",
+	            type: "POST",
+	            data: {
+	            	"draw": 1,
+	            	"length": 10,
+	                "buildingName": $("#s-inputBuildingName").val()
+	            }, success: function (data) { //dataId
+	            	table.draw();
+	            	//table.clearTable();
+	            	//alert(data);
+	            	table.addData(data.data);
+	            }
+	        }); */
+	        var search = "?";
+	        search += "buildingName=" + $("#s-inputBuildingName").val();
+	        search += "&startDate=" + $("#s-inputStartDate").val();
+	        search += "&endDate=" + $("#s-inputEndDate").val();
+    		table.ajax.url("${ctx}/manage/building/list" + search).load();
+    	});
     	/* $("#add-btn").click(function() {
     		$("#myModalLabel").text("新增楼盘");
     		clear();
@@ -109,6 +142,36 @@
     		            cell.innerHTML = i + 1;
     		        });
     	}).draw(); */
+    	//var mySource = [{"id":"5c63dc14d03dec2f97ffc","status":"1","updateTime":null,"createTime":1430289198492,"remarks":null,"buildingName":"??????","buildingYear":"2010","buildingFloor":"36"},{"id":"b492d714d03dec2f97ffd","status":"1","updateTime":null,"createTime":1430289164436,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"26"},{"id":"7f159014d03dec2f97ffe","status":"1","updateTime":null,"createTime":1430289133261,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"12"},{"id":"b5f35014d03dec2f97fff","status":"1","updateTime":null,"createTime":1430289097555,"remarks":null,"buildingName":"??????","buildingYear":"2010","buildingFloor":"31"},{"id":"9ad91214d03dec2f98000","status":"1","updateTime":null,"createTime":1430289040121,"remarks":null,"buildingName":"??????","buildingYear":"2001","buildingFloor":"30"},{"id":"9c7caa14d034886388000","status":"1","updateTime":null,"createTime":1430279194168,"remarks":null,"buildingName":"??????","buildingYear":"2012","buildingFloor":"18"},{"id":"ac601c14d02fcd50d7ffc","status":"1","updateTime":null,"createTime":1430274386529,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"16"},{"id":"6e0c6114d02fcd50d7ffd","status":"1","updateTime":null,"createTime":1430274374547,"remarks":null,"buildingName":"??????","buildingYear":"2014","buildingFloor":"18"},{"id":"be8eba14d02fcd50d7ffe","status":"1","updateTime":null,"createTime":1430274346544,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"23"},{"id":"13c05b14d02fcd50d8000","status":"1","updateTime":null,"createTime":1430274233613,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"30"},{"id":"132f4b14d02e4a5b68000","status":"1","updateTime":null,"createTime":1430272648630,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"20"}];
+    	$("#s-inputBuildingName").typeahead({
+            ajax: {
+                url: "${ctx}/manage/building/search",
+                timeout: 300,                   // 延时
+                method: 'post',
+                triggerLength: 1,               // 输入几个字符之后，开始请求
+                loadingClass: null,             // 加载数据时, 元素使用的样式类
+                preDispatch: null, // 发出请求之前，调用的预处理方法
+                preProcess: function (result) { // Ajax 请求完成之后，调用的后处理方法
+                	return result;
+                }
+            },
+            //source: mySource,
+            display: "buildingName",     // 默认的对象属性名称为 name 属性
+            val: "id",           // 默认的标识属性名称为 id 属性
+            items: 8,            // 最多显示项目数量
+            itemSelected: function (item, val, text) {      // 当选中一个项目的时候，回调函数
+                
+            }
+        });
+    	$('#s-inputStartDate').datepicker({
+    		language: 'zh-CN',
+    		format: 'yyyy-mm-dd',
+    		startDate: '-3d'
+    	});
+    	$('#s-inputEndDate').datepicker({
+    		language: 'zh-CN',
+    		format: 'yyyy-mm-dd'
+    	});
     });
     function saveData() {
     	var jsonData = {
@@ -180,10 +243,32 @@
         $("#inputBuildingYear").val("");
         $("#inputBuildingFloor").val("");
     }
+    function serverData() {
+    	alert(1);
+    }
     </script>
   </head>
   <body>
 	<div class="box-content">
+		<form class="form-inline" role="form">
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputBuildingName">楼盘名称</label>
+		  <input type="text" class="form-control" id="s-inputBuildingName" placeholder="楼盘名称" autocomplete="off">
+		</div>
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputStartDate">开始日期</label>
+		  <div class="input-append date">
+		  <input type="text" class="form-control" id="s-inputStartDate" placeholder="开始日期" style="width:120px;">
+		  <span class="add-on"><i class="icon-th"></i></span>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label class="sr-only" for="s-inputEndDate">结束日期</label>
+		  <input type="text" class="form-control" id="s-inputEndDate" placeholder="结束日期" style="width:120px;">
+		</div>
+		<button type="button" id="search-btn" class="btn btn-info btn-sm">搜索</button>
+		<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>
+		</form>
 		<table class="table table-striped table-bordered" id="table-list">
 		  <thead>
 			  <tr>
