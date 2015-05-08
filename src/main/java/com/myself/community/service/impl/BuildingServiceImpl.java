@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.myself.common.utils.UIDGeneratorUtil;
 import com.myself.community.dao.BuildingDao;
 import com.myself.community.entity.Building;
+import com.myself.community.entity.BuildingData;
 import com.myself.community.page.Page;
 import com.myself.community.param.BuildingQueryParam;
 import com.myself.community.service.BuildingService;
@@ -19,7 +20,7 @@ public class BuildingServiceImpl implements BuildingService {
 	@Autowired
 	private BuildingDao buildingDao;
 
-	public List<Building> list(Page<BuildingQueryParam> param) {
+	public List<BuildingData> list(Page<BuildingQueryParam> param) {
 		return buildingDao.list(param);
 	}
 

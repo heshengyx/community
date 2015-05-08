@@ -5,13 +5,17 @@
   <head>
     <title>社区网-楼盘管理</title>
     <link href="${ctx}/css/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="${ctx}/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="${ctx}/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script src="${ctx}/js/dataTables.bootstrap.js"></script>
     <script src="${ctx}/js/format.js"></script>
+    <script src="${ctx}/js/common.js"></script>
     <script src="${ctx}/js/bootstrap-typeahead.js"></script>
-    <script src="${ctx}/js/bootstrap-datepicker.min.js"></script>
-    <script src="${ctx}/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+    <script src="${ctx}/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${ctx}/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <style type="text/css">
+    .icon-calendar{background-position:-192px -120px}.icon-random{width:16px;background-position:-216px -120px}
+    </style>
     <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -55,11 +59,12 @@
 		            },
 		            "targets": [0]
 	            },
-	            /* {
-			    	"searchable": false,
-			    	"orderable": false,
+	            {
+	            	"render": function(data, type, row) {
+		            	return data.districtName + "-" + data.townName;
+		            },
 		            "targets": [1]
-	            }, */
+	            },
 	            {
 	            	"render": function(data, type, row) {
 		                var content = "";
@@ -70,13 +75,13 @@
 		            	}
 		            	return content;
 		            },
-		            "targets": [4]
+		            "targets": [5]
 	            },
 	            {
 	            	"render": function(data, type, row) {
 		            	return to_date_hms(data.createTime);
 		            },
-		            "targets": [5]
+		            "targets": [6]
 	            },
 	            {
 	            	"searchable": false,
@@ -87,12 +92,13 @@
 		                content += "<a href=\"javascript:void(0);\" onclick=\"deleteData('" + data.id + "')\">删除</a>";
 		            	return content;
 		            },
-		            "targets": [6]
+		            "targets": [7]
 	            }
 			],
 			"columns": [
 	            { "data": null},
 	            /* { "data": "id"}, */
+	            { "data": null },
 	            { "data": "buildingName" },
 	            { "data": "buildingYear" },
 	            { "data": "buildingFloor" },
@@ -108,23 +114,12 @@
     	//$("div.toolbar").html('<b>Custom tool bar! Text/images etc.');
     	$("#save-btn").click(saveData);
     	$("#search-btn").click(function() {
-    		/* $.ajax({
-	            url: "${ctx}/manage/building/list",
-	            dataType : "json",
-	            type: "POST",
-	            data: {
-	            	"draw": 1,
-	            	"length": 10,
-	                "buildingName": $("#s-inputBuildingName").val()
-	            }, success: function (data) { //dataId
-	            	table.draw();
-	            	//table.clearTable();
-	            	//alert(data);
-	            	table.addData(data.data);
-	            }
-	        }); */
 	        var search = "?";
-	        search += "buildingName=" + $("#s-inputBuildingName").val();
+	        search += "provinceId=" + $("#s-inputProvince").val();
+	        search += "&cityId=" + $("#s-inputCity").val();
+	        search += "&districtId=" + $("#s-inputDistrict").val();
+	        search += "&townId=" + $("#s-inputTown").val();
+	        search += "&buildingName=" + $("#s-inputBuildingName").val();
 	        search += "&startDate=" + $("#s-inputStartDate").val();
 	        search += "&endDate=" + $("#s-inputEndDate").val();
     		table.ajax.url("${ctx}/manage/building/list" + search).load();
@@ -142,7 +137,6 @@
     		            cell.innerHTML = i + 1;
     		        });
     	}).draw(); */
-    	//var mySource = [{"id":"5c63dc14d03dec2f97ffc","status":"1","updateTime":null,"createTime":1430289198492,"remarks":null,"buildingName":"??????","buildingYear":"2010","buildingFloor":"36"},{"id":"b492d714d03dec2f97ffd","status":"1","updateTime":null,"createTime":1430289164436,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"26"},{"id":"7f159014d03dec2f97ffe","status":"1","updateTime":null,"createTime":1430289133261,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"12"},{"id":"b5f35014d03dec2f97fff","status":"1","updateTime":null,"createTime":1430289097555,"remarks":null,"buildingName":"??????","buildingYear":"2010","buildingFloor":"31"},{"id":"9ad91214d03dec2f98000","status":"1","updateTime":null,"createTime":1430289040121,"remarks":null,"buildingName":"??????","buildingYear":"2001","buildingFloor":"30"},{"id":"9c7caa14d034886388000","status":"1","updateTime":null,"createTime":1430279194168,"remarks":null,"buildingName":"??????","buildingYear":"2012","buildingFloor":"18"},{"id":"ac601c14d02fcd50d7ffc","status":"1","updateTime":null,"createTime":1430274386529,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"16"},{"id":"6e0c6114d02fcd50d7ffd","status":"1","updateTime":null,"createTime":1430274374547,"remarks":null,"buildingName":"??????","buildingYear":"2014","buildingFloor":"18"},{"id":"be8eba14d02fcd50d7ffe","status":"1","updateTime":null,"createTime":1430274346544,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"23"},{"id":"13c05b14d02fcd50d8000","status":"1","updateTime":null,"createTime":1430274233613,"remarks":null,"buildingName":"??????","buildingYear":"2011","buildingFloor":"30"},{"id":"132f4b14d02e4a5b68000","status":"1","updateTime":null,"createTime":1430272648630,"remarks":null,"buildingName":"??????","buildingYear":"2013","buildingFloor":"20"}];
     	$("#s-inputBuildingName").typeahead({
             ajax: {
                 url: "${ctx}/manage/building/search",
@@ -163,19 +157,93 @@
                 
             }
         });
-    	$('#s-inputStartDate').datepicker({
+    	$('#s-inputStartDate').datetimepicker({
     		language: 'zh-CN',
+    		minView: "month",
     		format: 'yyyy-mm-dd',
-    		startDate: '-3d'
+    		autoclose: true,
+    		todayBtn: true,
+    		todayHighlight: true
     	});
-    	$('#s-inputEndDate').datepicker({
+    	$('#s-inputEndDate').datetimepicker({
     		language: 'zh-CN',
-    		format: 'yyyy-mm-dd'
+    		minView: "month",
+    		format: 'yyyy-mm-dd',
+    		autoclose: true,
+    		todayBtn: true,
+    		todayHighlight: true
     	});
+    	
+    	$.ajax({
+		  	url: "${ctx}/manage/region/list",
+		  	type : "POST",
+ 			dataType : "json",
+ 			data: {
+ 				"level": "1"
+ 			},
+		  	success: function(data) {
+		  		for(var i = 0; i < data.length; i++){
+					$("#inputProvince").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+				}
+		  		for(var i = 0; i < data.length; i++){
+					$("#s-inputProvince").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+				}
+  			}
+		});
+    	var option = {
+    		selectId: "#inputProvince",
+    		changeId: "#inputCity",
+    		url: "${ctx}/manage/region/list",
+    		level: "2",
+    		title: "选择市县"
+    	};
+    	select(option);
+    	option = {
+    		selectId: "#inputCity",
+    		changeId: "#inputDistrict",
+    		url: "${ctx}/manage/region/list",
+    		level: "3",
+    		title: "选择城区"
+    	};
+    	select(option);
+    	option = {
+       		selectId: "#inputDistrict",
+       		changeId: "#inputTown",
+       		url: "${ctx}/manage/region/list",
+       		level: "4",
+       		title: "选择村镇"
+       	};
+       	select(option);
+       	//------------seach-------------
+       	option = {
+    		selectId: "#s-inputProvince",
+    		changeId: "#s-inputCity",
+    		url: "${ctx}/manage/region/list",
+    		level: "2",
+    		title: "选择市县"
+    	};
+    	select(option);
+    	option = {
+    		selectId: "#s-inputCity",
+    		changeId: "#s-inputDistrict",
+    		url: "${ctx}/manage/region/list",
+    		level: "3",
+    		title: "选择城区"
+    	};
+    	select(option);
+    	option = {
+       		selectId: "#s-inputDistrict",
+       		changeId: "#s-inputTown",
+       		url: "${ctx}/manage/region/list",
+       		level: "4",
+       		title: "选择村镇"
+       	};
+       	select(option);
     });
     function saveData() {
     	var jsonData = {
     		"dataId": $("#dataId").val(),
+    		"townId": $("#inputTown").val(),
             "buildingName": $("#inputBuildingName").val(),
             "buildingYear": $("#inputBuildingYear").val(),
             "buildingFloor": $("#inputBuildingFloor").val()
@@ -191,6 +259,7 @@
             url: url,
             data: {
             	"id": obj.dataId,
+            	"townId": obj.townId,
                 "buildingName": obj.buildingName,
                 "buildingYear": obj.buildingYear,
                 "buildingFloor": obj.buildingFloor
@@ -252,19 +321,44 @@
 	<div class="box-content">
 		<form class="form-inline" role="form">
 		<div class="form-group">
+       	  <select class="form-control" id="s-inputProvince">
+    		<option value="0">选择省份</option>
+		  </select>
+        </div>
+        <div class="form-group">
+       	  <select class="form-control" id="s-inputCity">
+    		<option value="0">选择市县</option>
+		  </select>
+        </div>
+        <div class="form-group">
+       	  <select class="form-control" id="s-inputDistrict">
+    		<option value="0">选择城区</option>
+		  </select>
+        </div>
+        <div class="form-group">
+       	  <select class="form-control" id="s-inputTown">
+    		<option value="0">选择村镇</option>
+		  </select>
+        </div>
+		<div class="form-group">
 		  <label class="sr-only" for="s-inputBuildingName">楼盘名称</label>
 		  <input type="text" class="form-control" id="s-inputBuildingName" placeholder="楼盘名称" autocomplete="off">
 		</div>
 		<div class="form-group">
 		  <label class="sr-only" for="s-inputStartDate">开始日期</label>
-		  <div class="input-append date">
+		  <div class="input-append date form_datetime">
 		  <input type="text" class="form-control" id="s-inputStartDate" placeholder="开始日期" style="width:120px;">
-		  <span class="add-on"><i class="icon-th"></i></span>
+		  <span class="add-on"><i class="icon-remove"></i></span>
+		  <span class="add-on"><i class="icon-calendar"></i></span>
 		  </div>
 		</div>
 		<div class="form-group">
 		  <label class="sr-only" for="s-inputEndDate">结束日期</label>
+		  <div class="input-append date form_datetime">
 		  <input type="text" class="form-control" id="s-inputEndDate" placeholder="结束日期" style="width:120px;">
+		  <span class="add-on"><i class="icon-remove"></i></span>
+		  <span class="add-on"><i class="icon-calendar"></i></span>
+		  </div>
 		</div>
 		<button type="button" id="search-btn" class="btn btn-info btn-sm">搜索</button>
 		<button type="button" id="add-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</button>
@@ -273,6 +367,7 @@
 		  <thead>
 			  <tr>
 			  	  <th style="width:10px"><input type="checkbox" id='checkAll'></th>
+			  	  <th>片区</th>
 				  <th>楼盘名称</th>
 				  <th>建筑年代</th>
 				  <th>楼层</th>
@@ -297,12 +392,34 @@
 		            <div class="modal-body">
 		            	<form class="form-horizontal" role="form">
 		            	<div class="form-group">
-		                	<label for="inputDistrictId" class="col-sm-2 control-label">区域</label>
+		                	<label for="inputProvince" class="col-sm-2 control-label">省份</label>
 		                	<div class="col-sm-10">
-		                	<select class="form-control" id="inputDistrictId">
-						         <option>皇岗</option>
-						         <option>景田</option>
-						         <option>梅林</option>
+		                	<select class="form-control" id="inputProvince">
+						         <option value="0">选择省份</option>
+						    </select>
+		                	</div>
+		                </div>
+		                <div class="form-group">
+		                	<label for="inputCity" class="col-sm-2 control-label">市县</label>
+		                	<div class="col-sm-10">
+		                	<select class="form-control" id="inputCity">
+						         <option value="0">选择市县</option>
+						    </select>
+		                	</div>
+		                </div>
+		            	<div class="form-group">
+		                	<label for="inputDistrict" class="col-sm-2 control-label">城区</label>
+		                	<div class="col-sm-10">
+		                	<select class="form-control" id="inputDistrict">
+						         <option value="0">选择城区</option>
+						    </select>
+		                	</div>
+		                </div>
+		                <div class="form-group">
+		                	<label for="inputTown" class="col-sm-2 control-label">村镇</label>
+		                	<div class="col-sm-10">
+		                	<select class="form-control" id="inputTown">
+						         <option value="0">选择村镇</option>
 						    </select>
 		                	</div>
 		                </div>

@@ -12,6 +12,19 @@
 <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
 	</resultMap>
 	
+	<resultMap type="buildingData" id="buildingDataResult">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+<result column="DISTRICT_NAME" property="districtName" jdbcType="VARCHAR" />
+<result column="TOWN_NAME" property="townName" jdbcType="VARCHAR" />
+<result column="BUILDING_NAME" property="buildingName" jdbcType="VARCHAR" />
+<result column="BUILDING_YEAR" property="buildingYear" jdbcType="VARCHAR" />
+<result column="BUILDING_FLOOR" property="buildingFloor" jdbcType="VARCHAR" />
+<result column="STATUS" property="status" jdbcType="VARCHAR" />
+<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+<result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	
 	<select id="getData" parameterType="building" resultMap="buildingResult">
 		SELECT * FROM BUILDING WHERE ID=#{id, jdbcType=VARCHAR}
 	</select>
@@ -29,30 +42,45 @@
 </where> 
 		order by CREATE_TIME desc
 	</select>
-	<select id="list" parameterType="pageResult" resultMap="buildingResult">
-		SELECT * FROM BUILDING 
-		<where>
+	<select id="list" parameterType="pageResult" resultMap="buildingDataResult">
+		SELECT c.NAME DISTRICT_NAME, b.NAME TOWN_NAME, a.* FROM BUILDING a, REGION b, REGION c, REGION d, REGION e
+		WHERE a.TOWN_ID = b.ID
+		AND b.PARENT_ID = c.ID
+		AND c.PARENT_ID = d.ID
+		AND d.PARENT_ID = e.ID
+<if test="entity.provinceId != null and entity.provinceId != ''">
+	and e.ID = #{entity.provinceId, jdbcType=VARCHAR}
+</if>
+<if test="entity.cityId != null and entity.cityId != ''">
+	and d.ID = #{entity.cityId, jdbcType=VARCHAR}
+</if>
+<if test="entity.districtId != null and entity.districtId != ''">
+	and c.ID = #{entity.districtId, jdbcType=VARCHAR}
+</if>
+<if test="entity.townId != null and entity.townId != ''">
+	and b.ID = #{entity.townId, jdbcType=VARCHAR}
+</if>
 <if test="entity.buildingName != null and entity.buildingName != ''">
 	<!-- and BUILDING_NAME like CONCAT('%','${buildingName}','%') -->
-	and BUILDING_NAME like '%'||#{entity.buildingName}||'%'
+	and a.BUILDING_NAME like '%'||#{entity.buildingName}||'%'
 </if>
 <if test="entity.status != null and entity.status != ''">
-	and STATUS = #{entity.status}
+	and a.STATUS = #{entity.status}
 </if>
 <if test="entity.startDate != null and entity.startDate != ''">
-	<![CDATA[ and to_char(CREATE_TIME, 'YYYY-MM-DD') >= #{entity.startDate} ]]>
+	<![CDATA[ and to_char(a.CREATE_TIME, 'YYYY-MM-DD') >= #{entity.startDate} ]]>
 </if>
 <if test="entity.endDate != null and entity.endDate != ''">
-	<![CDATA[ and to_char(CREATE_TIME, 'YYYY-MM-DD') <= #{entity.endDate} ]]>
+	<![CDATA[ and to_char(a.CREATE_TIME, 'YYYY-MM-DD') <= #{entity.endDate} ]]>
 </if>
-</where> 
-		order by CREATE_TIME desc
+		order by a.CREATE_TIME desc
 	</select>
 	
 	<insert id="save" parameterType="building">
-		INSERT INTO BUILDING (ID, BUILDING_NAME, BUILDING_YEAR, BUILDING_FLOOR, STATUS, CREATE_TIME, REMARKS)
+		INSERT INTO BUILDING (ID, TOWN_ID, BUILDING_NAME, BUILDING_YEAR, BUILDING_FLOOR, STATUS, CREATE_TIME, REMARKS)
 		VALUES (
 #{id, jdbcType=VARCHAR},
+#{townId, jdbcType=VARCHAR},
 #{buildingName, jdbcType=VARCHAR},
 #{buildingYear, jdbcType=VARCHAR},
 #{buildingFloor, jdbcType=VARCHAR},

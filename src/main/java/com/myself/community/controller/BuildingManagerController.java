@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.myself.common.message.JsonMessage;
 import com.myself.common.message.JsonResult;
 import com.myself.community.entity.Building;
+import com.myself.community.entity.BuildingData;
 import com.myself.community.page.Page;
 import com.myself.community.param.BuildingQueryParam;
 import com.myself.community.service.BuildingService;
@@ -35,9 +36,9 @@ public class BuildingManagerController {
 		pageResult.setRows(param.getLength());
 
 		pageResult.setEntity(param);
-		List<Building> buildings = buildingService.list(pageResult);
+		List<BuildingData> buildings = buildingService.list(pageResult);
 		
-		JsonResult<Building> jResult = new JsonResult<Building>();
+		JsonResult<BuildingData> jResult = new JsonResult<BuildingData>();
 		jResult.setDraw(param.getDraw());
 		jResult.setRecordsTotal(pageResult.getTotalRecord());
 		jResult.setRecordsFiltered(pageResult.getTotalRecord());

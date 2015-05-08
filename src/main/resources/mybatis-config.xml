@@ -13,6 +13,8 @@
 		
 		<typeAlias type="com.myself.community.entity.Building" alias="building" />
 		<typeAlias type="com.myself.community.entity.Region" alias="region" />
+		
+		<typeAlias type="com.myself.community.entity.BuildingData" alias="buildingData" />
 		<!-- [typeAlias] -->
 	</typeAliases>
 	
