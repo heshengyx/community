@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.myself.community.dao.PermissionDao;
 import com.myself.community.entity.Permission;
+import com.myself.community.param.PermissionQueryParam;
 
 
 public class ChainDefinitionSectionMetaSource implements
@@ -39,7 +40,7 @@ public class ChainDefinitionSectionMetaSource implements
 
 	public Section getObject() throws Exception {
 		//获取所有Resource  
-		List<Permission> permissions = permissionDao.queryPermissions();
+		List<Permission> permissions = permissionDao.list(new PermissionQueryParam());
   
         Ini ini = new Ini();  
         //加载默认的url  

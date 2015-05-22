@@ -15,16 +15,13 @@
 	</select>
 	
 	<select id="getRole" parameterType="int" resultMap="roleResult">
-		SELECT * FROM CLAZZ WHERE ID=#{id, jdbcType=NUMERIC}
+		SELECT * FROM ROLE WHERE ID=#{id, jdbcType=NUMERIC}
 	</select>
 	<select id="list" parameterType="pageResult" resultMap="roleResult">
-		SELECT * FROM CLAZZ 
+		SELECT * FROM ROLE 
 		<where>
-<if test="entity.className != null and entity.className != ''">
-	and CLASS_NAME = #{entity.className}
-</if>
-<if test="entity.tableName != null and entity.tableName != ''">
-	and TABLE_NAME = #{entity.tableName}
+<if test="entity.name != null and entity.name != ''">
+	and NAME = #{entity.name}
 </if>
 <if test="entity.status != null and entity.status != ''">
 	and STATUS = #{entity.status}
@@ -37,12 +34,12 @@
 	</select>
 	
 	<insert id="save" parameterType="role" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO CLAZZ (NAME, TSTATUS, CREATE_TIME, UPDATE_TIME, REMARKS)
+		INSERT INTO ROLE (ID, NAME, STATUS, CREATE_TIME, REMARKS)
 		VALUES (
+#{id, jdbcType=VARCHAR},
 #{name, jdbcType=VARCHAR},
 #{status, jdbcType=VARCHAR},
 #{createTime, jdbcType=TIMESTAMP},
-#{updateTime, jdbcType=TIMESTAMP},
 #{remarks, jdbcType=VARCHAR})
 	</insert>
 	

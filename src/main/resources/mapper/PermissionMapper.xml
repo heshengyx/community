@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.myself.community.mapper.PermissionMapper">
 	<resultMap type="permission" id="permissionResult">
-		<id column="ID" property="id" jdbcType="NUMERIC" />
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<id column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
 <result column="NAME" property="name" jdbcType="VARCHAR" />
 <result column="URL" property="url" jdbcType="VARCHAR" />
 <result column="STATUS" property="status" jdbcType="VARCHAR" />
@@ -14,21 +15,18 @@
 	<select id="queryPermissionsByRoleId" parameterType="String" resultMap="permissionResult">
 		SELECT a.* FROM PERMISSION a, ROLE_PERMISSION b WHERE a.ID = b.PERMISSION_ID AND b.ROLE_ID = #{roleId}
 	</select>
-	<select id="queryPermissions" resultMap="permissionResult">
+	<select id="listAll" resultMap="permissionResult">
 		SELECT a.* FROM PERMISSION a
-	</select>
+	</select>e
 	
 	<select id="getRole" parameterType="int" resultMap="permissionResult">
 		SELECT * FROM CLAZZ WHERE ID=#{id, jdbcType=NUMERIC}
 	</select>
 	<select id="list" parameterType="pageResult" resultMap="permissionResult">
-		SELECT * FROM CLAZZ 
+		SELECT * FROM PERMISSION 
 		<where>
-<if test="entity.className != null and entity.className != ''">
-	and CLASS_NAME = #{entity.className}
-</if>
-<if test="entity.tableName != null and entity.tableName != ''">
-	and TABLE_NAME = #{entity.tableName}
+<if test="entity.name != null and entity.name != ''">
+	and NAME = #{entity.name}
 </if>
 <if test="entity.status != null and entity.status != ''">
 	and STATUS = #{entity.status}
@@ -40,17 +38,19 @@
 		order by CREATE_TIME desc
 	</select>
 	
-	<insert id="save" parameterType="role" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO CLAZZ (NAME, TSTATUS, CREATE_TIME, UPDATE_TIME, REMARKS)
+	<insert id="save" parameterType="permission" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO PERMISSION (ID, PARENT_ID, NAME, URL, STATUS, CREATE_TIME, REMARKS)
 		VALUES (
+#{id, jdbcType=VARCHAR},
+#{parentId, jdbcType=VARCHAR},
 #{name, jdbcType=VARCHAR},
+#{url, jdbcType=VARCHAR},
 #{status, jdbcType=VARCHAR},
 #{createTime, jdbcType=TIMESTAMP},
-#{updateTime, jdbcType=TIMESTAMP},
 #{remarks, jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="update" parameterType="role">
+	<update id="update" parameterType="permission">
 		update CLAZZ
 		<set>
 <if test="className != null">
