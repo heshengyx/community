@@ -17,7 +17,7 @@
 	</select>
 	<select id="listAll" resultMap="permissionResult">
 		SELECT a.* FROM PERMISSION a
-	</select>e
+	</select>
 	
 	<select id="getRole" parameterType="int" resultMap="permissionResult">
 		SELECT * FROM CLAZZ WHERE ID=#{id, jdbcType=NUMERIC}
